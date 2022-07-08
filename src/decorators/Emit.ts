@@ -1,5 +1,3 @@
-import Vue from 'vue'
-
 // Code copied from Vue/src/shared/util.js
 const hyphenateRE = /\B([A-Z])/g
 const hyphenate = (str: string) => str.replace(hyphenateRE, '-$1').toLowerCase()
@@ -9,9 +7,9 @@ const hyphenate = (str: string) => str.replace(hyphenateRE, '-$1').toLowerCase()
  * @param  event The name of the event
  * @return MethodDecorator
  */
-export function Emit(event?: string) {
-  return function (_target: Vue, propertyKey: string, descriptor: any) {
-    const key = hyphenate(propertyKey)
+export function Emit(event?: string): MethodDecorator {
+  return function (_target: object, propertyKey: string | symbol, descriptor: any) {
+    const key = hyphenate(propertyKey.toString())
     const original = descriptor.value
     descriptor.value = function emitter(...args: any[]) {
       const emit = (returnValue: any) => {

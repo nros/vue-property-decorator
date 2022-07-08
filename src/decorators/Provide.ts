@@ -1,9 +1,9 @@
-import { createDecorator } from 'vue-class-component'
 import {
   inheritInjected,
   needToProduceProvide,
   produceProvide,
 } from '../helpers/provideInject'
+import { createDecorator } from '../helpers/createDecorator'
 
 /**
  * decorator of a provide
@@ -11,7 +11,7 @@ import {
  * @return PropertyDecorator | void
  */
 
-export function Provide(key?: string | symbol) {
+export function Provide(key?: string | symbol): PropertyDecorator {
   return createDecorator((componentOptions, k) => {
     let provide: any = componentOptions.provide
     inheritInjected(componentOptions)

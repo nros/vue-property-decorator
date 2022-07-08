@@ -1,17 +1,17 @@
 import Vue, { PropOptions } from 'vue'
-import { createDecorator } from 'vue-class-component'
+import { createDecorator } from '../helpers/createDecorator'
 
 /**
  * decorator for capturings v-model binding to component
  * @param options the options for the prop
  */
-export function VModel(options: PropOptions = {}) {
+export function VModel(options: PropOptions = {}): PropertyDecorator {
   const valueKey: string = 'value'
   return createDecorator((componentOptions, key) => {
     ;(componentOptions.props || ((componentOptions.props = {}) as any))[
       valueKey
     ] = options
-    ;(componentOptions.computed || (componentOptions.computed = {}))[key] = {
+    ;(componentOptions.computed || (componentOptions.computed = {}))[key.toString()] = {
       get() {
         return (this as any)[valueKey]
       },

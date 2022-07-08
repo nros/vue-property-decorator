@@ -1,12 +1,12 @@
 import { WatchOptions } from 'vue'
-import { createDecorator } from 'vue-class-component'
+import { createDecorator } from '../helpers/createDecorator'
 
 /**
  * decorator of a watch function
  * @param  path the path or the expression to observe
  * @param  watchOptions
  */
-export function Watch(path: string, watchOptions: WatchOptions = {}) {
+export function Watch(path: string, watchOptions: WatchOptions = {}): MethodDecorator {
   return createDecorator((componentOptions, handler) => {
     componentOptions.watch ||= Object.create(null)
     const watch: any = componentOptions.watch

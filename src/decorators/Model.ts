@@ -1,7 +1,7 @@
 import Vue, { PropOptions } from 'vue'
-import { createDecorator } from 'vue-class-component'
 import { Constructor } from 'vue/types/options'
 import { applyMetadata } from '../helpers/metadata'
+import { createDecorator } from '../helpers/createDecorator'
 
 /**
  * decorator of model
@@ -12,14 +12,14 @@ import { applyMetadata } from '../helpers/metadata'
 export function Model(
   event?: string,
   options: PropOptions | Constructor[] | Constructor = {},
-) {
-  return (target: Vue, key: string) => {
-    applyMetadata(options, target, key)
+): PropertyDecorator {
+  return (target: any, key: string | symbol) => {
+    applyMetadata(options, target, key.toString())
     createDecorator((componentOptions, k) => {
       ;(componentOptions.props || ((componentOptions.props = {}) as any))[
         k
       ] = options
-      componentOptions.model = { prop: k, event: event || k }
+      componentOptions.model = { prop: k.toString(), event: event || k.toString() }
     })(target, key)
   }
 }

@@ -1,5 +1,5 @@
-import { createDecorator } from 'vue-class-component'
 import { InjectKey } from 'vue/types/options'
+import { createDecorator } from '../helpers/createDecorator'
 
 export type InjectOptions = { from?: InjectKey; default?: any }
 /**
@@ -8,13 +8,13 @@ export type InjectOptions = { from?: InjectKey; default?: any }
  * @return PropertyDecorator
  */
 
-export function Inject(options?: InjectOptions | InjectKey) {
+export function Inject(options?: InjectOptions | InjectKey): PropertyDecorator {
   return createDecorator((componentOptions, key) => {
     if (typeof componentOptions.inject === 'undefined') {
       componentOptions.inject = {}
     }
     if (!Array.isArray(componentOptions.inject)) {
-      componentOptions.inject[key] = options || key
+      componentOptions.inject[key.toString()] = options || key
     }
   })
 }

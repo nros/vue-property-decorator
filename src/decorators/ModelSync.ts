@@ -1,7 +1,7 @@
 import Vue, { PropOptions } from 'vue'
-import { createDecorator } from 'vue-class-component'
 import { Constructor } from 'vue/types/options'
 import { applyMetadata } from '../helpers/metadata'
+import { createDecorator } from '../helpers/createDecorator'
 
 /**
  * decorator of synced model and prop
@@ -14,15 +14,15 @@ export function ModelSync(
   propName: string,
   event?: string,
   options: PropOptions | Constructor[] | Constructor = {},
-) {
-  return (target: Vue, key: string) => {
-    applyMetadata(options, target, key)
+): PropertyDecorator {
+  return (target: any, key: string | symbol) => {
+    applyMetadata(options, target, key.toString())
     createDecorator((componentOptions, k) => {
       ;(componentOptions.props || ((componentOptions.props = {}) as any))[
         propName
       ] = options
-      componentOptions.model = { prop: propName, event: event || k }
-      ;(componentOptions.computed || (componentOptions.computed = {}))[k] = {
+      componentOptions.model = { prop: propName, event: event || k.toString() }
+      ;(componentOptions.computed || (componentOptions.computed = {}))[k.toString()] = {
         get() {
           return (this as any)[propName]
         },
